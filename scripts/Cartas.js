@@ -19,7 +19,7 @@ export default class Cartas{
     set Naipe(naipe){
         this.naipe = naipe
     }
-
+    
     pegarCarta(){
         return [this.valor, this.naipe]
     }

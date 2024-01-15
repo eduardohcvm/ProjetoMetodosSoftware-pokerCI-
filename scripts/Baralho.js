@@ -4,6 +4,7 @@ export default class Baralho{
     constructor(){
         this.cartas = []
         this.descartes = []
+        this.mesa = []
         this.criarCartas()
     }
 
@@ -31,7 +32,37 @@ export default class Baralho{
             
             [lista[i], lista[indiceAleatorio]] = [lista[indiceAleatorio], lista[i]];
         }
+        console.log(this.cartas)        //REMOVER DEPOIS DOS TESTES
     }
 
+    //Retira a primeira carta do array e retorna ela
+    puxarCarta(){
+        return this.cartas.shift()
+    }
 
+    colocarFlop(){
+        this.descartes.push(this.puxarCarta())
+        for(let i = 0; i <= 2 ;i++){
+            this.mesa.push(this.puxarCarta())
+        }
+        console.log(this.descartes)     //REMOVER DEPOIS DOS TESTES
+        console.log(this.mesa)          //REMOVER DEPOIS DOS TESTES
+    }
+
+    colocarTurn(){
+        this.descartes.push(this.puxarCarta())
+        this.mesa.push(this.puxarCarta())
+    }
+
+    colocarRiver(){
+        this.descartes.push(this.puxarCarta())
+        this.mesa.push(this.puxarCarta())
+    }
+
+    colocarTodoBordo(){
+        this.embaralhar(this.cartas)
+        this.colocarFlop()
+        this.colocarTurn()
+        this.colocarRiver()
+    }
 }
