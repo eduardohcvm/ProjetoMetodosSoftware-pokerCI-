@@ -1,39 +1,33 @@
 import Baralho from "./Baralho.js"
+import Game from "./Game.js"
 
-const baralho = new Baralho()
+const game = new Game(8)
+game.baralho.embaralhar(game.baralho.cartas)
 
-//SO PARA DEBUGAR ;; Ver no CONSOLE 
-
-const array = [] 
-function criarArray(){
-    for(let i = 0; i < baralho.cartas.length; i++){
-        array.push(baralho.cartas[i])
-    }
-}
-
+document.getElementById('darCartas').addEventListener('click', darCartas);
 document.getElementById('botaoAcao').addEventListener('click', acao);
 document.getElementById('turn').addEventListener('click', turn);
 document.getElementById('river').addEventListener('click', river);
-document.getElementById('all').addEventListener('click', all);
+
+console.log(game.player)
+
+function darCartas(){
+    game.entregarCartasPlayer()
+    game.exibirCartaPlayer()
+}
 
 function acao() {
-    baralho.embaralhar(baralho.cartas)
-    criarArray()
-    baralho.colocarFlop()
+    game.baralho.colocarFlop()
+    game.exibirFlop()
 }
 
 function turn(){
-    baralho.colocarTurn()
+    game.baralho.colocarTurn()
+    game.exibirTurn()
 }
 
 function river(){
-    baralho.colocarRiver()
+    game.baralho.colocarRiver()
+    game.exibirRiver()
 }
 
-function all(){
-    baralho.colocarTodoBordo()
-}
-
-console.log(array)
-
-//SO PARA DEBUGAR ;; Ver no CONSOLE 

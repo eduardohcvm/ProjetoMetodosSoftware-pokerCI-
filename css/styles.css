@@ -24,6 +24,23 @@
     border: 20px solid rgb(133, 0, 0);
 }
 
+.mao{
+    position: absolute;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    top: 0;
+    z-index: 1;
+    width: 135px;
+    height: 100px;
+}
+
+.mao img{
+    width: 62.5px;
+    height: 90px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.281);
+}
+
 .linha{
     display: flex;
     justify-content: center;
@@ -43,29 +60,56 @@
 }
 
 .flop{
-    width: 150px;
-    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 201px;
+    height: 100px;
     background-color: transparent;
     border: 1px solid white;
     margin-right: 10px;
     border-radius: 7px;
+}
+
+.flop img{
+    width: 80.25px;
+    height: 94px;
+    padding: 2px;
 }
 
 .turn{
-    width: 50px;
-    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 67px;
+    height: 100px;
     background-color: transparent;
     border: 1px solid white;
     margin-right: 10px;
     border-radius: 7px;
 }
 
+.turn img{
+    width: 80.25px;
+    height: 94px;
+    padding: 2px;
+}
+
 .river{
-    width: 50px;
-    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 67px;
+    height: 100px;
     background-color: transparent;
     border: 1px solid white;
     border-radius: 7px;
+}
+
+.river img{
+    width: 80.25px;
+    height: 94px;
+    padding: 2px;
 }
 
 .player{

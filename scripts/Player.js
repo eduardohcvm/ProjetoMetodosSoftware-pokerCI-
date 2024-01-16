@@ -1,13 +1,10 @@
-import Cartas from "./Cartas"
+import Cartas from "./Cartas.js"
 
 export default class Player{
-    constructor(){
-        this.position = null
+    constructor(id){
+        this.id = id
         this.mao = []
-    }
-
-    get position(){
-        return this.position
+        this.bot = true
     }
 
     get Mao(){

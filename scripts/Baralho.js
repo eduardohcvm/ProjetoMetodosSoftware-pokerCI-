@@ -32,7 +32,6 @@ export default class Baralho{
             
             [lista[i], lista[indiceAleatorio]] = [lista[indiceAleatorio], lista[i]];
         }
-        console.log(this.cartas)        //REMOVER DEPOIS DOS TESTES
     }
 
     //Retira a primeira carta do array e retorna ela
@@ -60,7 +59,6 @@ export default class Baralho{
     }
 
     colocarTodoBordo(){
-        this.embaralhar(this.cartas)
         this.colocarFlop()
         this.colocarTurn()
         this.colocarRiver()
