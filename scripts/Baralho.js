@@ -12,15 +12,31 @@ export default class Baralho{
         return this.cartas
     }
 
+    get Descartes(){
+        return this.descartes
+    }
+
+    get Mesa(){
+        return this.mesa
+    }
+
+    adicionarCartaNaMesa(carta){
+        this.mesa.push(carta)
+    }
+
+    adicionarCartaNoDescarte(carta){
+        this.descartes.push(carta)
+    }
+
     criarCartas(){
-        const valores = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]
-        const naipes = ["C", "O", "E", "P"]
+        const valores = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king", "ace"]
+        const naipes = ["hearts", "diamonds", "spades", "clubs"]
 
         //Criando cartas e adicionando no this.cartas
         for (const naipe of naipes){
             for (const valor of valores){
                 const carta = new Cartas(valor, naipe)
-                this.cartas.push(carta)
+                this.Cartas.push(carta)
             }
         }
     }
@@ -35,32 +51,4 @@ export default class Baralho{
     }
 
     //Retira a primeira carta do array e retorna ela
-    puxarCarta(){
-        return this.cartas.shift()
-    }
-
-    colocarFlop(){
-        this.descartes.push(this.puxarCarta())
-        for(let i = 0; i <= 2 ;i++){
-            this.mesa.push(this.puxarCarta())
-        }
-        console.log(this.descartes)     //REMOVER DEPOIS DOS TESTES
-        console.log(this.mesa)          //REMOVER DEPOIS DOS TESTES
-    }
-
-    colocarTurn(){
-        this.descartes.push(this.puxarCarta())
-        this.mesa.push(this.puxarCarta())
-    }
-
-    colocarRiver(){
-        this.descartes.push(this.puxarCarta())
-        this.mesa.push(this.puxarCarta())
-    }
-
-    colocarTodoBordo(){
-        this.colocarFlop()
-        this.colocarTurn()
-        this.colocarRiver()
-    }
 }
