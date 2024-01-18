@@ -97,7 +97,7 @@ class Validator {
   
       let email = input.value;
   
-      let errorMessage = `Insira um e-mail no padrão matheus@email.com`;
+      let errorMessage = `Insira um e-mail no padrão com @(nome do email).com`;
   
       if(!re.test(email)) {
         this.printMessage(input, errorMessage);
@@ -146,9 +146,14 @@ class Validator {
           numbers++;
         }
       }
-  
+
+      if (!input.value) {
+        let errorMessage = 'Este campo nao pode está vazio';
+      }
+
+
       if(uppercases === 0 || numbers === 0) {
-        let errorMessage = `A senha precisa um caractere maiúsculo e um número`;
+        let errorMessage = `A senha precisa de um caractere maiúsculo e um número`;
   
         this.printMessage(input, errorMessage);
       }
