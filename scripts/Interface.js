@@ -3,6 +3,7 @@ const box_mesa = document.querySelector(".mao")
 const flop_bordo = document.querySelector(".flop")
 const turn_bordo = document.querySelector(".turn")
 const river_bordo = document.querySelector(".river")
+const playerLogo = document.querySelector(".player")
 
 export default class Interface{
 
@@ -24,6 +25,31 @@ export default class Interface{
         box_mesa.appendChild(img2)
     }
 
+    removerCartaPlayer(){
+        while (box_mesa.firstChild) {
+            box_mesa.removeChild(box_mesa.firstChild);
+          }
+    }
+
+    exibirPosicao(playerInicial){
+        const posicaoDiv     = document.createElement("div")
+        posicaoDiv.className = 'posicao'
+        posicaoDiv.innerHTML = `${playerInicial.Posicao}`
+
+        const playerLogo = document.querySelector(`.player.player-${playerInicial.Id}`)
+        
+        playerLogo.appendChild(posicaoDiv)
+    }
+
+    removerPosicao(posicao){
+        const playerLogo = document.querySelector(`.player.player-${posicao}`);
+        const posicaoDiv = playerLogo.querySelector('.posicao');
+    
+        if (posicaoDiv) {
+            playerLogo.removeChild(posicaoDiv);
+        }
+    }
+
     exibirFlop(carta1, carta2, carta3){
 
         const img1 = document.createElement("img")
@@ -39,15 +65,37 @@ export default class Interface{
         flop_bordo.appendChild(img3)
     }
 
+    removerFlop(){
+        while (flop_bordo.firstChild) {
+            flop_bordo.removeChild(flop_bordo.firstChild);
+          }
+    }
+
     exibirTurn(carta){
         const img = document.createElement("img")
         img.src = `../img/${carta.Valor}_of_${carta.Naipe}.png`
         turn_bordo.appendChild(img)
     }
 
+    removerTurn(){
+        turn_bordo.removeChild(turn_bordo.firstChild);
+    }
+
     exibirRiver(carta){
         const img = document.createElement("img")
         img.src = `../img/${carta.Valor}_of_${carta.Naipe}.png`
         river_bordo.appendChild(img)
+    }
+
+    removerRiver(){
+        river_bordo.removeChild(river_bordo.firstChild);
+    }
+
+    resetInterface(posicao){
+        this.removerCartaPlayer()
+        this.removerFlop()
+        this.removerTurn()
+        this.removerRiver()
+        this.removerPosicao(posicao)
     }
 }

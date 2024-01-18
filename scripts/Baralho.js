@@ -20,6 +20,18 @@ export default class Baralho{
         return this.mesa
     }
 
+    set Cartas(valor){
+        this.cartas = valor
+    }
+
+    set Descartes(valor){
+        this.descartes = valor
+    }
+
+    set Mesa(valor){
+        this.mesa = valor
+    }
+
     adicionarCartaNaMesa(carta){
         this.mesa.push(carta)
     }
@@ -48,6 +60,13 @@ export default class Baralho{
             
             [lista[i], lista[indiceAleatorio]] = [lista[indiceAleatorio], lista[i]];
         }
+    }
+
+    resetBaralho(){
+        this.Cartas = []
+        this.Descartes = []
+        this.Mesa = []
+        this.criarCartas()
     }
 
     //Retira a primeira carta do array e retorna ela

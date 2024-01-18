@@ -4,7 +4,12 @@
     box-sizing: border-box;
 }
 
+body{
+    background-color: rgb(25, 13, 27);
+}
+
 .box-mesa{
+    position: relative;
     width: 100%;
     height: 100vh;
     display: flex;
@@ -29,7 +34,7 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    top: 0;
+    top: -50px;
     z-index: 1;
     width: 135px;
     height: 100px;
@@ -39,6 +44,12 @@
     width: 62.5px;
     height: 90px;
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.281);
+}
+
+.mao img:hover{
+    width: 75px;
+    height: 100px;
+    margin: 0 5px;
 }
 
 .linha{
@@ -113,6 +124,7 @@
 }
 
 .player{
+    position: relative;
     position: absolute;
     width: 120px;
     height: 120px;
@@ -160,4 +172,52 @@
 .player-8{
     top: -75px;
     left: 200px;
+}
+
+.posicao{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    width: 30px;
+    height: 30px;
+    font-size: 25px;
+    background-color: white;
+    border-radius: 50%;
+    color: red;
+    font-weight: bolder;
+    box-shadow: 2px 2px 2px rgb(126, 123, 123);
+}
+
+.comandos{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    margin: 0 auto;
+    width: 500px;
+    top: 8%;
+}
+
+.comandos button{
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    margin: 0 5px;
+    width: 80px;
+    height: 40px;
+    border-radius: 7px;
+    font-weight: bolder;
+    transition: 0.5s;
+    box-shadow: none;
+    border: 2px solid black;
+}
+
+.comandos button:hover{
+    width: 125px;
+    height: 45px;
+    cursor: pointer;
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
 }
