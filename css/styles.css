@@ -40,6 +40,40 @@ body{
     height: 100px;
 }
 
+.mao-2{
+    top: -50px;
+    right: 193px; 
+}
+
+.mao-3{
+    top: 178px;
+    right: -70px;
+}
+
+.mao-4{
+    top: 400px;
+    right: 193px;
+}
+
+.mao-5{
+    top: 400px;
+}
+
+.mao-6{
+    top: 400px; 
+    left: 193px;
+}
+
+.mao-7{
+    top: 178px; 
+    left: -70px;
+}
+
+.mao-8{
+    top: -50px; 
+    left: 193px;
+}
+
 .mao img{
     width: 62.5px;
     height: 90px;
@@ -86,7 +120,7 @@ body{
     width: 80.25px;
     height: 94px;
     padding: 2px;
-}
+}   
 
 .turn{
     display: flex;

@@ -78,10 +78,6 @@ export default class Game{
             this.SmallBlind.Posicao = "Small-Blind"
             this.BigBlind.Posicao = "Big-blind"
 
-            console.log(this.Dealer.Posicao, this.Dealer)
-            console.log(this.SmallBlind.Posicao, this.SmallBlind)
-            console.log(this.BigBlind.Posicao, this.BigBlind)
-
             interfacee.exibirPosicao(this.Dealer)    
         }else{
             alert("Jogos com quantidade de player != 8 ainda n foram programados")
@@ -96,10 +92,6 @@ export default class Game{
         this.Dealer.Posicao = "D"
         this.SmallBlind.Posicao = "Small-Blind"
         this.BigBlind.Posicao = "Big-blind"
-
-        console.log(this.Dealer.Posicao, this.Dealer)
-        console.log(this.SmallBlind.Posicao, this.SmallBlind)
-        console.log(this.BigBlind.Posicao, this.BigBlind)
 
         interfacee.exibirPosicao(this.Dealer)  
     }
@@ -148,6 +140,7 @@ export default class Game{
 
     async jogar(){
         
+        console.log(this.Baralho.Cartas, this.Player)
         this.Baralho.embaralhar(this.Baralho.Cartas)
         this.entregarCartasPlayer()
         interfacee.exibirCartaPlayer(this.Player[0].Mao[0], this.Player[0].Mao[1])
@@ -171,9 +164,20 @@ export default class Game{
             
         botaoClicado = await this.aguardarAcaoJogador()
         this.habilitarBotoes()
+        
+        this.showDown()
+
+        botaoClicado = await this.aguardarAcaoJogador()
+        this.habilitarBotoes()
 
         this.proximaRodada()
         
+    }
+
+    showDown(){
+        for(let i = 1; i <this.Player.length; i++){
+            interfacee.exibirCartaPlayerBot(this.Player[i].Id, this.Player[i].Mao[0], this.Player[i].Mao[1])
+        }
     }
 
     async proximaRodada(){
@@ -191,6 +195,7 @@ export default class Game{
         
         this.jogar()
     }
+
 
     //N entendi quase porra nenhuma dessa função, so abstrai o conceito memsmo. Méritos para o gepeto aqui.
     async aguardarAcaoJogador() {

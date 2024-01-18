@@ -3,7 +3,6 @@ const box_mesa = document.querySelector(".mao")
 const flop_bordo = document.querySelector(".flop")
 const turn_bordo = document.querySelector(".turn")
 const river_bordo = document.querySelector(".river")
-const playerLogo = document.querySelector(".player")
 
 export default class Interface{
 
@@ -15,20 +14,46 @@ export default class Interface{
     }
 
     exibirCartaPlayer(carta1, carta2){
+        const mao = document.createElement("div")
         const img1 = document.createElement("img")
         const img2 = document.createElement("img")
-        
+
+        mao.className = "mao"
         img1.src = `../img/${carta1.Valor}_of_${carta1.Naipe}.png`
         img2.src = `../img/${carta2.Valor}_of_${carta2.Naipe}.png`
 
-        box_mesa.appendChild(img1)
-        box_mesa.appendChild(img2)
+        mesa.appendChild(mao)
+        mao.appendChild(img1)
+        mao.appendChild(img2)
+    }
+
+    exibirCartaPlayerBot(id, carta1, carta2){
+        const mao = document.createElement("div")
+        const img1 = document.createElement("img")
+        const img2 = document.createElement("img")
+
+        mao.className = `mao mao-${id}`
+        img1.src = `../img/${carta1.Valor}_of_${carta1.Naipe}.png`
+        img2.src = `../img/${carta2.Valor}_of_${carta2.Naipe}.png`
+
+        mesa.appendChild(mao)
+        mao.appendChild(img1)
+        mao.appendChild(img2)
     }
 
     removerCartaPlayer(){
-        while (box_mesa.firstChild) {
-            box_mesa.removeChild(box_mesa.firstChild);
+        const mesa = document.querySelector(".mao")
+        while (mesa.firstChild) {
+            mesa.removeChild(mesa.firstChild);
           }
+    }
+
+    removerCartaPlayerBot(){
+        const elementosMao = document.querySelectorAll('.mesa .mao');
+
+        elementosMao.forEach(elemento => {
+            mesa.removeChild(elemento);
+        });
     }
 
     exibirPosicao(playerInicial){
@@ -93,6 +118,7 @@ export default class Interface{
 
     resetInterface(posicao){
         this.removerCartaPlayer()
+        this.removerCartaPlayerBot()
         this.removerFlop()
         this.removerTurn()
         this.removerRiver()
