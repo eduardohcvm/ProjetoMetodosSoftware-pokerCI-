@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
 body{
@@ -255,3 +258,79 @@ body{
     color: white;
     border: 2px solid white;
 }
+
+.boxStack{
+    position: absolute;
+    top: -30px;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    width: 100px;
+    height: 30px;
+    background-color: rgba(60, 170, 10, 0.527);
+    border: 2px solid rgb(190, 190, 190);
+    border-radius: 7px;
+    color: white;
+    font-weight: bold;
+}
+
+.boxStackBottom{
+    position: absolute;
+    top: 120px;
+}
+
+.stack{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    color: white;
+    font-size: 18px;
+}
+
+.stack img{
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+}
+
+.stack-1{
+    top: 50px;
+}
+
+.stack-2{
+    top: 50px;
+    right: 245px;
+}
+
+.stack-3{
+    top: 200px;
+    right: 60px;
+}
+
+.stack-4{
+    top: 340px;
+    right: 225px;
+}
+
+.stack-5{
+    top: 340px;
+    right: 420px;
+}
+
+.stack-6{
+    top: 340px;
+    left: 245px;
+}
+
+.stack-7{
+    top: 200px;
+    left: 70px;
+    flex-direction: row-reverse;
+}
+
+.stack-8{
+    top: 50px;
+    left: 245px;
+}
+

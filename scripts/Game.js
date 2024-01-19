@@ -7,7 +7,7 @@ const interfacee = new Interface()
 const userAction = new UserAction()
 
 export default class Game{
-    constructor(qnt_players){
+    constructor(qnt_players, smallBlindValor, bigBlindValor){
         this.player = [];
         this.baralho = new Baralho();
         this.qnt_players = qnt_players;
@@ -15,6 +15,10 @@ export default class Game{
         this.dealer = null;
         this.smallBlind = null;
         this.bigBlind = null;
+        this.smallBlindValor = null
+        this.bigBlindValor = null
+        this.pot = 0
+        this.definirBlinds(smallBlindValor, bigBlindValor)
         this.criarPlayers();
         this.definirPosiçõesIniciais();
     }
@@ -48,6 +52,22 @@ export default class Game{
         return this.bigBlind 
     }
 
+    get Blinds(){
+        return this.blinds
+    }
+
+    get Pot(){
+        return this.pot
+    }
+
+    get SmallBlindValor(){
+        return this.smallBlindValor
+    }
+
+    get BigBlindValor(){
+        return this.bigBlindValor
+    }
+
     set Dealer(player){
         this.dealer = player
     }
@@ -60,27 +80,55 @@ export default class Game{
         this.bigBlind = player
     }
 
+    set Pot(valor){
+        this.pot = valor
+    }
+
+    set SmallBlindValor(valor){
+        this.smallBlindValor = valor
+    }
+
+    set BigBlindValor(valor){
+        this.bigBlindValor = valor
+    }
+
     criarPlayers(){
         for(let i = 0; i <= this.Qnt_players - 1 ; i++){
             this.Player.push(new Player(i+1, 10000))
-            interfacee.exibirPlayerLogo(i)
+            interfacee.exibirPlayerCompleto(this.Player[i])
         }
     }
 
     definirPosiçõesIniciais(){
         if(this.Qnt_players === 8){
-            this.Dealer = this.Player[Math.floor(Math.random() * (this.Qnt_players + 1))]
+            this.Dealer = this.Player[Math.floor(Math.random() * (this.Qnt_players ))]
             //usar dealer.Id pois id vai de 1 a 8, array player de 0 a 7. Se o smallblind é o player 8 no array de players ele é 7
-            this.SmallBlind = this.player[this.Dealer.Id == this.Qnt_players ? (this.Dealer.id - this.Qnt_players) : this.Dealer.id]
-            this.BigBlind = this.player[this.Dealer.id + 1 >= this.Qnt_players ? ((this.Dealer.id + 1) - this.Qnt_players) : this.Dealer.id + 1]
+            this.SmallBlind = this.player[this.Dealer.Id == this.Qnt_players ? (this.Dealer.Id - this.Qnt_players) : this.Dealer.Id]
+            this.BigBlind = this.player[this.Dealer.Id + 1 >= this.Qnt_players ? ((this.Dealer.Id + 1) - this.Qnt_players) : this.Dealer.Id + 1]
 
             this.Dealer.Posicao = "D"
             this.SmallBlind.Posicao = "Small-Blind"
-            this.BigBlind.Posicao = "Big-blind"
+            this.BigBlind.Posicao = "Big-Blind"
 
-            interfacee.exibirPosicao(this.Dealer)    
+            interfacee.exibirPosicao(this.Dealer) 
+            this.definirValoresBlinds()
+    
         }else{
             alert("Jogos com quantidade de player != 8 ainda n foram programados")
+        }
+    }
+
+    definirBlinds(smallBlindValor, bigBlindValor){
+        this.SmallBlindValor = smallBlindValor
+        this.BigBlindValor = bigBlindValor
+    }
+
+    definirValoresBlinds(){
+        for(let i = 0; i <= this.Qnt_players - 1 ; i++){
+            if(this.Player[i].Posicao == "Small-Blind"){
+                interfacee.exibirPlayerStack(this.Player[i], this.SmallBlindValor)
+                interfacee.exibirPlayerStack(this.Player[i+1 == this.Qnt_players ? ((i + 1) - this.Qnt_players) : i+1 ], this.BigBlindValor)
+            }
         }
     }
 
@@ -188,8 +236,9 @@ export default class Game{
 
         this.Baralho.resetBaralho()
         this.Baralho.embaralhar(this.Baralho.Cartas)
-        interfacee.resetInterface(this.Dealer.Id)
+        interfacee.resetInterface(this.Dealer.Id, this.SmallBlind, this.BigBlind)
         this.atualizarPosicoesPlayers()
+        this.definirValoresBlinds()
 
         //Implementar Lógica de rodar as posições dos players
         

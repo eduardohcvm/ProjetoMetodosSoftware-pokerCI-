@@ -4,13 +4,53 @@ const flop_bordo = document.querySelector(".flop")
 const turn_bordo = document.querySelector(".turn")
 const river_bordo = document.querySelector(".river")
 
+
 export default class Interface{
 
-    exibirPlayerLogo(index){
+    exibirPlayerLogo(player){
         const playerDiv = document.createElement("div")
-        playerDiv.className = `player player-${index + 1}`
-        playerDiv.innerHTML = `Player - ${index + 1}`
+        playerDiv.className = `player player-${player.Id}`
+        playerDiv.innerHTML = `Player - ${player.Id}`
         mesa.appendChild(playerDiv)
+    }
+
+    exibirPlayerStackHub(player){
+        const box_player = document.querySelector(`.player.player-${player.Id}`)
+        const stackHub = document.createElement("div")
+
+        stackHub.className = "boxStack"
+        stackHub.innerHTML = `${player.stack}`
+        if(player.Id === 4 || player.Id === 5 || player.Id === 6){
+            stackHub.className = "boxStack boxStackBottom"
+        }
+        box_player.appendChild(stackHub)
+    }
+
+    exibirPlayerStack(player, valor){
+        const stack= document.createElement("div")
+        const chipImg = document.createElement("img")
+        const chipTextValue = document.createElement("p")
+
+        stack.className = `stack stack-${player.Id}`
+        chipImg.src = "../img/chip.png"
+        chipTextValue.innerHTML = valor
+
+        mesa.appendChild(stack)
+        stack.appendChild(chipImg)
+        stack.appendChild(chipTextValue)
+    }
+
+    removerPlayerStack(player){
+        const divStack = document.querySelector(`.stack.stack-${player.Id}`)
+        if(divStack){
+            mesa.removeChild(divStack)
+        }
+
+    }
+
+    exibirPlayerCompleto(player){
+        this.exibirPlayerLogo(player)
+        this.exibirPlayerStackHub(player)
     }
 
     exibirCartaPlayer(carta1, carta2){
@@ -116,12 +156,14 @@ export default class Interface{
         river_bordo.removeChild(river_bordo.firstChild);
     }
 
-    resetInterface(posicao){
+    resetInterface(posicaoDealer, smallBlind, bigBlind){
         this.removerCartaPlayer()
         this.removerCartaPlayerBot()
         this.removerFlop()
         this.removerTurn()
         this.removerRiver()
-        this.removerPosicao(posicao)
+        this.removerPosicao(posicaoDealer)
+        this.removerPlayerStack(smallBlind)
+        this.removerPlayerStack(bigBlind)
     }
 }
