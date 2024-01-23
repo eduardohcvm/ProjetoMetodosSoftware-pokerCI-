@@ -63,6 +63,7 @@ export default class Player{
     }
 
     tomarDecisao(valor, rodada){
+
         if(rodada === 'preflop'){
             if(this.Posicao === 'Small-Blind'){
                 this.callSmall(valor)

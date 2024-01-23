@@ -15,10 +15,10 @@ export default class Game {
         this.dealer = null;
         this.smallBlind = null;
         this.bigBlind = null;
-        this.smallBlindValor = null
-        this.bigBlindValor = null
-        this.pot = 0
-        this.definirBlinds(smallBlindValor, bigBlindValor)
+        this.smallBlindValor = null;
+        this.bigBlindValor = null;
+        this.pot = 0;
+        this.definirBlinds(smallBlindValor, bigBlindValor);
         this.criarPlayers();
         this.definirPosiçõesIniciais();
     }
@@ -148,12 +148,12 @@ export default class Game {
     atualizarPosicoesPlayers() {
         this.resetarPosicaoPlayers()
         this.Dealer = this.Player[this.Dealer.Id == 8 ? (this.Dealer.Id - this.Qnt_players) : this.Dealer.Id]
-        this.SmallBlind = this.player[this.SmallBlind.Id == this.Qnt_players ? ((this.SmallBlind.Id) - this.Qnt_players) : this.SmallBlind.Id]
-        this.BigBlind = this.player[this.BigBlind.Id == this.Qnt_players ? (this.BigBlind.Id - this.Qnt_players) : this.BigBlind.Id]
+        this.SmallBlind = this.Player[this.SmallBlind.Id == this.Qnt_players ? ((this.SmallBlind.Id) - this.Qnt_players) : this.SmallBlind.Id]
+        this.BigBlind = this.Player[this.BigBlind.Id == this.Qnt_players ? (this.BigBlind.Id - this.Qnt_players) : this.BigBlind.Id]
 
         this.Dealer.Posicao = "D"
         this.SmallBlind.Posicao = "Small-Blind"
-        this.BigBlind.Posicao = "Big-blind"
+        this.BigBlind.Posicao = "Big-Blind"
 
         interfacee.exibirPosicao(this.Dealer)
     }
@@ -236,14 +236,13 @@ export default class Game {
                         this.Pot += this.smallBlindValor 
                     }else{
                         playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada)
-                        this.Pot += this.BigBlindValor 
+                        this.Pot += this.BigBlindValor  
                     }
 
-                } else if (playersOrdenados[i].Posicao === 'Big-Blind') {
+                }else if (playersOrdenados[i].Posicao === 'Big-Blind') {
                     if (this.Rodada === 'preflop') {
                         playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada)
-                        interfacee.removerPlayerStack(playersOrdenados[i])
-                        this.Pot += this.BigBlindValor 
+                        interfacee.removerPlayerStack(playersOrdenados[i]) 
                     }else{
                         playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada)
                         this.Pot += this.BigBlindValor 
@@ -257,7 +256,7 @@ export default class Game {
                 playersOrdenados[i].Jogou = true
 
             } else {                                                         //Se for o Bot
-                await this.esperarUmSegundo()
+                //await this.esperarUmSegundo()
                 if (playersOrdenados[i].Posicao === "Small-Blind") {
                     if (this.Rodada === 'preflop') {
                         playersOrdenados[i].tomarDecisao(this.SmallBlindValor, this.Rodada)
@@ -271,7 +270,7 @@ export default class Game {
                     if (this.Rodada === 'preflop') {
                         playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada)
                         interfacee.removerPlayerStack(playersOrdenados[i])
-                        this.Pot += 0
+                        
                     }else{
                         playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada)
                         this.Pot += this.BigBlindValor 
@@ -284,12 +283,12 @@ export default class Game {
             interfacee.exibirPlayerStack(playersOrdenados[i], this.BigBlindValor)
             interfacee.atualizarPlayerStackHub(playersOrdenados[i], playersOrdenados[i].Stack)
             console.log(this.Pot)
-            await this.esperarUmSegundo()
+            //await this.esperarUmSegundo()
         }
 
     }
 
-    async controlarRodadaPreFlop() {
+    async controlarRodadaPreFlop(){
         const primeiroAgir = this.pegarPrimeiroAJogarPreFlop()
         await this.controlarAcaoPlayerBot(primeiroAgir)
 
@@ -321,19 +320,6 @@ export default class Game {
         this.habilitarBotoes()
     }
 
-    verificarSeTodosBotsJogaram() {
-        for (let i = 0; i < this.Qnt_players; i++) {
-            if (this.Player[i].Jogou === false) {
-                return console.log(false)
-            }
-        }
-        return true
-    }
-
-    verificarSePlayerJogou(player) {
-        return player.Jogou === true ? true : false
-    }
-
     apostasObrigatorias() {
         this.SmallBlind.callSmall(this.SmallBlindValor)
         this.BigBlind.call(this.BigBlindValor)
@@ -355,38 +341,36 @@ export default class Game {
         this.definirValoresBlinds()
 
         //apostas obrigatorias
+        
         this.apostasObrigatorias()
-
+        
         //PRÉ FLOP
-
+        this.Rodada = 'preflop'
         await this.controlarRodadaPreFlop()
         interfacee.removerAllPlayerStack()
-
-        console.log(this.Baralho.Cartas, this.Player, this.Pot)
+        
         //FLOP
 
         await this.controlarRodadaFlop()
         interfacee.removerAllPlayerStack()
 
-        console.log(this.Baralho.Cartas, this.Player, this.Pot)
         //TURN
 
         await this.controlarRodadaTurn()
         interfacee.removerAllPlayerStack()
 
-        console.log(this.Baralho.Cartas, this.Player, this.Pot)
         //RIVER
 
         await this.controlarRodadaRiver()
         interfacee.removerAllPlayerStack()
 
-        console.log(this.Baralho.Cartas, this.Player, this.Pot)
         this.showDown()
 
         botaoClicado = await this.aguardarAcaoJogador()
         this.habilitarBotoes()
 
         this.proximaRodada()
+
 
     }
 
@@ -396,7 +380,8 @@ export default class Game {
         }
     }
 
-    async proximaRodada() {
+    async proximaRodada(){
+        console.log(this.Baralho.Cartas, this.Player, this.Pot)
         console.log("Próxima rodada!")
         for (const players of this.Player) {
             players.resetMao()
@@ -407,8 +392,7 @@ export default class Game {
         interfacee.resetInterface(this.Dealer.Id, this.SmallBlind, this.BigBlind)
         this.atualizarPosicoesPlayers()
         this.definirValoresBlinds()
-
-        //Implementar Lógica de rodar as posições dos players
+        this.Pot = 0
 
         this.jogar()
     }
