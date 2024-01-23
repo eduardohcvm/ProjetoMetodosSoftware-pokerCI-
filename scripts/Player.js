@@ -25,6 +25,10 @@ export default class Player{
     get Jogou(){
         return this.jogou
     }
+    get Stack(){
+        return this.stack
+    }
+
 
     set Mao(valor){
         this.mao = valor
@@ -38,6 +42,14 @@ export default class Player{
         this.posicao = posicao
     }
 
+    set Stack(valor){
+        this.stack = valor
+    }
+
+    set Jogou(valor){
+        this.jogou = valor
+    }
+
     adicionarCartaNaMao(carta){
         this.mao.push(carta)
     }
@@ -48,6 +60,36 @@ export default class Player{
 
     resetMao(){
         this.Mao = []
+    }
+
+    tomarDecisao(valor, rodada){
+        if(rodada === 'preflop'){
+            if(this.Posicao === 'Small-Blind'){
+                this.callSmall(valor)
+            }else if(this.Posicao === 'Big-Blind'){   
+                this.check()
+            }else{
+                this.call(valor)
+            }
+        }else{
+            this.call(valor)
+        }
+        this.Jogou = true
+    }
+
+    callSmall(valor){
+        console.log(`O jogador ${this.Id} completou o Small`)
+        this.Stack = this.Stack - valor
+    }
+
+    call(valor){
+        console.log(`O jogador ${this.Id} deu call`)
+        this.Stack = this.Stack - valor
+    }
+
+    check(){
+        console.log(`O jogador ${this.Id} deu check`)
+        this.Jogou = true
     }
      
 }

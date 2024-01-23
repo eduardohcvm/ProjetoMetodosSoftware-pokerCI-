@@ -40,12 +40,23 @@ export default class Interface{
         stack.appendChild(chipTextValue)
     }
 
+    atualizarPlayerStackHub(player, valor){
+        const divPai = document.querySelector(`.player.player-${player.id}`)
+        const divFilha = divPai.querySelector('.boxStack');
+
+        divFilha.innerHTML = valor
+    }
+
     removerPlayerStack(player){
         const divStack = document.querySelector(`.stack.stack-${player.Id}`)
         if(divStack){
             mesa.removeChild(divStack)
         }
+    }
 
+    removerAllPlayerStack(){
+        const divsStack = document.querySelectorAll('.mesa .stack');
+        divsStack.forEach(div => div.remove());
     }
 
     exibirPlayerCompleto(player){
