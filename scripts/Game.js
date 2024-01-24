@@ -228,24 +228,24 @@ export default class Game {
 
         for (let i = 0; i < this.Qnt_players; i++) {
             if (playersOrdenados[i].Bot === false) {                         //Se for o Usuário
-                await this.aguardarAcaoJogador();
+                let acao = await this.aguardarAcaoJogador()
                 if (playersOrdenados[i].Posicao === 'Small-Blind') {
                     if (this.Rodada === 'preflop'){
                         playersOrdenados[i].tomarDecisao(this.SmallBlindValor, this.Rodada)
                         interfacee.removerPlayerStack(playersOrdenados[i])
-                        this.Pot += this.smallBlindValor 
+                        this.Pot += this.smallBlindValor
                     }else{
                         playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada)
-                        this.Pot += this.BigBlindValor  
+                        this.Pot += this.BigBlindValor
                     }
 
                 }else if (playersOrdenados[i].Posicao === 'Big-Blind') {
                     if (this.Rodada === 'preflop') {
                         playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada)
-                        interfacee.removerPlayerStack(playersOrdenados[i]) 
+                        interfacee.removerPlayerStack(playersOrdenados[i])
                     }else{
                         playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada)
-                        this.Pot += this.BigBlindValor 
+                        this.Pot += this.BigBlindValor
                     }
 
                 } else {
@@ -256,7 +256,7 @@ export default class Game {
                 playersOrdenados[i].Jogou = true
 
             } else {                                                         //Se for o Bot
-                //await this.esperarUmSegundo()
+                await this.esperarUmSegundo()
                 if (playersOrdenados[i].Posicao === "Small-Blind") {
                     if (this.Rodada === 'preflop') {
                         playersOrdenados[i].tomarDecisao(this.SmallBlindValor, this.Rodada)
@@ -283,7 +283,7 @@ export default class Game {
             interfacee.exibirPlayerStack(playersOrdenados[i], this.BigBlindValor)
             interfacee.atualizarPlayerStackHub(playersOrdenados[i], playersOrdenados[i].Stack)
             console.log(this.Pot)
-            //await this.esperarUmSegundo()
+            await this.esperarUmSegundo()
         }
 
     }
@@ -329,49 +329,6 @@ export default class Game {
         
         interfacee.atualizarPlayerStackHub(this.SmallBlind, this.SmallBlind.Stack)
         interfacee.atualizarPlayerStackHub(this.BigBlind, this.BigBlind.Stack)
-    }
-
-
-    async jogar() {
-        let botaoClicado
-
-        this.Baralho.embaralhar(this.Baralho.Cartas)
-        this.entregarCartasPlayer()
-        interfacee.exibirCartaPlayer(this.Player[0].Mao[0], this.Player[0].Mao[1])
-        this.definirValoresBlinds()
-
-        //apostas obrigatorias
-        
-        this.apostasObrigatorias()
-        
-        //PRÉ FLOP
-        this.Rodada = 'preflop'
-        await this.controlarRodadaPreFlop()
-        interfacee.removerAllPlayerStack()
-        
-        //FLOP
-
-        await this.controlarRodadaFlop()
-        interfacee.removerAllPlayerStack()
-
-        //TURN
-
-        await this.controlarRodadaTurn()
-        interfacee.removerAllPlayerStack()
-
-        //RIVER
-
-        await this.controlarRodadaRiver()
-        interfacee.removerAllPlayerStack()
-
-        this.showDown()
-
-        botaoClicado = await this.aguardarAcaoJogador()
-        this.habilitarBotoes()
-
-        this.proximaRodada()
-
-
     }
 
     showDown() {
@@ -430,5 +387,47 @@ export default class Game {
         userAction.BotaoRaise.disabled = true;
         userAction.BotaoCheck.disabled = true;
         userAction.BotaoAllin.disabled = true;
+    }
+
+    async jogar() {
+        let botaoClicado
+
+        this.Baralho.embaralhar(this.Baralho.Cartas)
+        this.entregarCartasPlayer()
+        interfacee.exibirCartaPlayer(this.Player[0].Mao[0], this.Player[0].Mao[1])
+        this.definirValoresBlinds()
+
+        //apostas obrigatorias
+        
+        this.apostasObrigatorias()
+        
+        //PRÉ FLOP
+        this.Rodada = 'preflop'
+        await this.controlarRodadaPreFlop()
+        interfacee.removerAllPlayerStack()
+        
+        //FLOP
+
+        await this.controlarRodadaFlop()
+        interfacee.removerAllPlayerStack()
+
+        //TURN
+
+        await this.controlarRodadaTurn()
+        interfacee.removerAllPlayerStack()
+
+        //RIVER
+
+        await this.controlarRodadaRiver()
+        interfacee.removerAllPlayerStack()
+
+        this.showDown()
+
+        botaoClicado = await this.aguardarAcaoJogador()
+        this.habilitarBotoes()
+
+        this.proximaRodada()
+
+
     }
 }
