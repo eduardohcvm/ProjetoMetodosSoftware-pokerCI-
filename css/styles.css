@@ -172,7 +172,7 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    
+    z-index: 1;
 }
 
 .player-1{
@@ -181,7 +181,7 @@ body{
 
 .player-2{
     top: -75px;
-    right: 200px;
+    right: 200px;   
 }
 
 .player-3{
@@ -209,6 +209,46 @@ body{
 .player-8{
     top: -75px;
     left: 200px;
+}
+
+.player p{
+    background-color: rgba(0, 0, 0, 0.589);
+    padding: 5px;
+    border-radius: 7px;
+}
+
+.boxBackCards{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.backCard{
+    z-index: -1;
+    margin: 0 1.5px;
+    width: 50px;
+    height: 70px;
+}
+
+.pot{
+    position: absolute;
+    top: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pot img{
+    width: 30px;
+    height: 30px;
+}
+
+.potValor{
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    margin: 0 5px;
 }
 
 .posicao{

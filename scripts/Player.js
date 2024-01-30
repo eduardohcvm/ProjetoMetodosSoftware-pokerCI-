@@ -74,7 +74,7 @@ export default class Player{
         this.fold = false;
     }
 
-    tomarDecisao(valor, rodada, pote){
+    tomarDecisao(valor, rodada, pote, interfacee){
         let smallTemp = 5
         let bigTemp = 10
         let numeroAleatorio = Math.floor(Math.random() * 99);
@@ -86,7 +86,8 @@ export default class Player{
         if(rodada === 'preflop'){
             if(this.Posicao === 'Small-Blind'){
                 if(medroso){ // Sempre fold
-                    this.foldar()
+                    this.foldar(interfacee)
+                    
                     return valor
                 }else if(passivo){ // Completa o small ou 50% fold/50% call se teve raise
                     if(valor === bigTemp) {
@@ -95,7 +96,8 @@ export default class Player{
                         let numeroAleatorio2 = Math.floor(Math.random() * 100)
 
                         if(numeroAleatorio2 < 50) {
-                            this.foldar()
+                            this.foldar(interfacee)
+                            
                         } else {
                             this.call(valor)
                         }
@@ -121,7 +123,8 @@ export default class Player{
                     if(valor === bigTemp){
                         this.check()
                     }else{
-                        this.foldar()
+                        this.foldar(interfacee)
+                        
                     }
                     return valor
                 }else if(passivo){ // Check ou 50% fold/50% call (se teve raise)
@@ -131,7 +134,8 @@ export default class Player{
                         let numeroAleatorio4 = Math.floor(Math.random() * 100)
 
                         if(numeroAleatorio4 < 50) {
-                            this.foldar()
+                            this.foldar(interfacee)
+                            
                         } else {
                             this.call(valor)
                         }
@@ -154,13 +158,15 @@ export default class Player{
                 }
             }else{
                 if(medroso){ // Sempre fold
-                    this.foldar()
+                    this.foldar(interfacee)
+                    
                     return valor
                 }else if(passivo){ // 50% fold/50% call
                     let numeroAleatorio6 = Math.floor(Math.random() * 100)
 
                     if(numeroAleatorio6 < 50) {
-                        this.foldar()
+                        this.foldar(interfacee)
+                        
                     } else {
                         this.call(valor)
                     }
@@ -200,7 +206,8 @@ export default class Player{
                     let numeroAleatorio9 = Math.floor(Math.random() * 100)
 
                     if(numeroAleatorio9 < 50) {
-                        this.foldar()
+                        this.foldar(interfacee)
+                        
                     } else {
                         this.call(valor)
                     }
@@ -241,8 +248,14 @@ export default class Player{
         this.Jogou = true
     }
 
-    foldar(){
+    foldar(interfacee){
         console.log(`O jogador ${this.Id} foldou`)
+
+        if(this.Id != 1){
+            interfacee.removerPlayerBackCards(this.Id)
+            interfacee.atualizarPlayerNameFold(this.id)
+        }
+        
         this.Fold = true
         this.jogou = true
     }

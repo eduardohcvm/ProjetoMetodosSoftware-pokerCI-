@@ -144,6 +144,7 @@ export default class Game {
     definirBlinds(smallBlindValor, bigBlindValor) {
         this.SmallBlindValor = smallBlindValor
         this.BigBlindValor = bigBlindValor
+
     }
 
     definirValoresBlinds() {
@@ -357,7 +358,7 @@ export default class Game {
                     }
                 } else if (playersOrdenados[i].Posicao === "Big-Blind") {
                     if (this.Rodada === 'preflop') {
-                        playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada)
+                        playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada, this.Pot, interfacee)
                         interfacee.removerPlayerStack(playersOrdenados[i])
 
                     } else {
@@ -378,6 +379,8 @@ export default class Game {
             }
 
             console.log(this.Pot)
+            interfacee.atualizarPot(this.pot)
+
             await this.esperarUmSegundo()
 
         }

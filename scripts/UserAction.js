@@ -24,6 +24,9 @@ export default class UserAction{
         return this.botaoAllin
     }
     get ValorRaise(){
+        return this.valorRaise
+    }
+    get ValorRaise(){
         return this.valorRaise.value
     }
 

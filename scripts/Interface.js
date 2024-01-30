@@ -9,9 +9,38 @@ export default class Interface{
 
     exibirPlayerLogo(player){
         const playerDiv = document.createElement("div")
+        const playerNameDiv = document.createElement("p")
         playerDiv.className = `player player-${player.Id}`
-        playerDiv.innerHTML = `Player - ${player.Id}`
+        playerNameDiv.innerHTML = `Player - ${player.Id}`
+        playerDiv.append(playerNameDiv)
         mesa.appendChild(playerDiv)
+    }
+
+    exibirPlayerBackCards(player){
+        const box_player = document.querySelector(`.player.player-${player.Id}`)
+        if(player.Id != 1){
+            const divBackCards = document.createElement("div")
+            const backCard1 = document.createElement("img")
+            const backCard2 = document.createElement("img")
+
+            backCard1.src = "../img/Back_Blue.png"
+            backCard2.src = "../img/Back_Blue.png"
+
+            divBackCards.className = `boxBackCards playerBackCard-${player.id}`
+            backCard1.className = "backCard"
+            backCard2.className = "backCard"
+    
+            box_player.append(divBackCards)
+            divBackCards.append(backCard1, backCard2)
+        }
+    }
+    
+    removerPlayerBackCards(id){
+        document.querySelector(`.playerBackCard-${id}`).remove()
+    }
+
+    atualizarPlayerNameFold(id){
+        document.querySelector(`.player.player-${id} p`).innerHTML = "Foldou"
     }
 
     exibirPlayerStackHub(player){
@@ -61,7 +90,26 @@ export default class Interface{
 
     exibirPlayerCompleto(player){
         this.exibirPlayerLogo(player)
+        this.exibirPlayerBackCards(player)
         this.exibirPlayerStackHub(player)
+    }
+
+    exibirPot(valor){
+        const pot = document.createElement("div")
+        const ficha = document.createElement("img")
+        const valorDiv = document.createElement("p")
+
+        pot.className = "pot"
+        ficha.src = "../img/chip.png"
+        valorDiv.className = "potValor"
+        valorDiv.innerHTML = valor
+
+        pot.append(ficha, valorDiv)
+        mesa.append(pot)
+    }
+
+    atualizarPot(valor){
+        document.querySelector(".potValor").innerHTML = valor
     }
 
     exibirCartaPlayer(carta1, carta2){
