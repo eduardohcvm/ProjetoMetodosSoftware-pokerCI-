@@ -73,7 +73,7 @@ export default class Game {
         this.dealer = player
     }
 
-    set Rodada(rodada){
+    set Rodada(rodada) {
         this.rodada = rodada
     }
 
@@ -225,70 +225,151 @@ export default class Game {
 
     async controlarAcaoPlayerBot(primeiroAgir) {
         const playersOrdenados = this.ordenarVetorPlayers(primeiroAgir)
+        let valorRaise
 
         for (let i = 0; i < this.Qnt_players; i++) {
-            if (playersOrdenados[i].Bot === false) {                         //Se for o Usuário
+            if (playersOrdenados[i].Bot === false && playersOrdenados[i].Fold === false) {                         //Se for o Usuário
                 let acao = await this.aguardarAcaoJogador()
                 if (playersOrdenados[i].Posicao === 'Small-Blind') {
-                    if (this.Rodada === 'preflop'){
-                        playersOrdenados[i].tomarDecisao(this.SmallBlindValor, this.Rodada)
-                        interfacee.removerPlayerStack(playersOrdenados[i])
-                        this.Pot += this.smallBlindValor
-                    }else{
-                        playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada)
-                        this.Pot += this.BigBlindValor
-                    }
-
-                }else if (playersOrdenados[i].Posicao === 'Big-Blind') {
                     if (this.Rodada === 'preflop') {
-                        playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada)
-                        interfacee.removerPlayerStack(playersOrdenados[i])
-                    }else{
-                        playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada)
-                        this.Pot += this.BigBlindValor
+                        switch (acao) {
+                            case "fold":
+                                playersOrdenados[i].Fold = true;
+                                playersOrdenados[i].foldar();
+                                break;
+                            case "raise":
+                                valorRaise = userAction.ValorRaise.value;
+                                playersOrdenados[i].raise(valorRaise);
+                                break;
+                            case "allin":
+                                playersOrdenados[i].allin(playersOrdenados[i].Stack);
+                                break;
+                            default:
+                                playersOrdenados[i].tomarDecisao(this.SmallBlindValor, this.Rodada);
+                                this.Pot += this.smallBlindValor;
+                                break;
+                        }
+                        interfacee.removerPlayerStack(playersOrdenados[i]);
+                    } else {
+                        switch (acao) {
+                            case "fold":
+                                playersOrdenados[i].Fold = true;
+                                playersOrdenados[i].foldar();
+                                break;
+                            case "raise":
+                                valorRaise = userAction.ValorRaise.value;
+                                playersOrdenados[i].raise(valorRaise);
+                                break;
+                            case "allin":
+                                playersOrdenados[i].allin(playersOrdenados[i].Stack);
+                                break;
+                            default:
+                                playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada);
+                                this.Pot += this.BigBlindValor;
+                                break;
+                        }
                     }
-
+                } else if (playersOrdenados[i].Posicao === 'Big-Blind') {
+                    if (this.Rodada === 'preflop') {
+                        switch (acao) {
+                            case "fold":
+                                playersOrdenados[i].Fold = true;
+                                playersOrdenados[i].foldar();
+                                break;
+                            case "raise":
+                                valorRaise = userAction.ValorRaise.value;
+                                playersOrdenados[i].raise(valorRaise);
+                                break;
+                            case "allin":
+                                playersOrdenados[i].allin(playersOrdenados[i].Stack);
+                                break;
+                            default:
+                                playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada);
+                                break;
+                        }
+                    } else {
+                        switch (acao) {
+                            case "fold":
+                                playersOrdenados[i].Fold = true;
+                                playersOrdenados[i].foldar();
+                                break;
+                            case "raise":
+                                valorRaise = userAction.ValorRaise.value;
+                                playersOrdenados[i].raise(valorRaise);
+                                break;
+                            case "allin":
+                                playersOrdenados[i].allin(playersOrdenados[i].Stack);
+                                break;
+                            default:
+                                playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada);
+                                this.Pot += this.BigBlindValor;
+                                break;
+                        }
+                    }
                 } else {
-                    playersOrdenados[i].call(this.BigBlindValor)
-                    this.Pot += this.BigBlindValor 
+                    switch (acao) {
+                        case "fold":
+                            playersOrdenados[i].Fold = true;
+                            playersOrdenados[i].foldar();
+                            break;
+                        case "raise":
+                            valorRaise = userAction.ValorRaise.value;
+                            playersOrdenados[i].raise(valorRaise);
+                            break;
+                        case "allin":
+                            playersOrdenados[i].allin(playersOrdenados[i].Stack);
+                            break;
+                        default:
+                            playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada);
+                            this.Pot += this.BigBlindValor;
+                            break;
+                    }
                 }
-                interfacee.atualizarPlayerStackHub(playersOrdenados[i], playersOrdenados[i].Stack)
-                playersOrdenados[i].Jogou = true
+                interfacee.atualizarPlayerStackHub(playersOrdenados[i], playersOrdenados[i].Stack);
+                playersOrdenados[i].Jogou = true;
 
-            } else {                                                         //Se for o Bot
+
+            } else if (!playersOrdenados[i].Fold) {                                                         //Se for o Bot
                 await this.esperarUmSegundo()
                 if (playersOrdenados[i].Posicao === "Small-Blind") {
                     if (this.Rodada === 'preflop') {
                         playersOrdenados[i].tomarDecisao(this.SmallBlindValor, this.Rodada)
                         interfacee.removerPlayerStack(playersOrdenados[i])
-                        this.Pot += this.SmallBlindValor 
-                    }else{
+                        this.Pot += this.SmallBlindValor
+                    } else {
                         playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada)
-                        this.Pot += this.BigBlindValor 
+                        this.Pot += this.BigBlindValor
                     }
-                }else if (playersOrdenados[i].Posicao === "Big-Blind"){
+                } else if (playersOrdenados[i].Posicao === "Big-Blind") {
                     if (this.Rodada === 'preflop') {
                         playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada)
                         interfacee.removerPlayerStack(playersOrdenados[i])
-                        
-                    }else{
+
+                    } else {
                         playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada)
-                        this.Pot += this.BigBlindValor 
+                        this.Pot += this.BigBlindValor
                     }
-                }else {
+                } else {
                     playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada)
-                    this.Pot += this.BigBlindValor 
+                    this.Pot += this.BigBlindValor
                 }
             }
-            interfacee.exibirPlayerStack(playersOrdenados[i], this.BigBlindValor)
-            interfacee.atualizarPlayerStackHub(playersOrdenados[i], playersOrdenados[i].Stack)
+
+            if (!playersOrdenados[i].Fold) {
+                interfacee.exibirPlayerStack(playersOrdenados[i], this.BigBlindValor)
+                interfacee.atualizarPlayerStackHub(playersOrdenados[i], playersOrdenados[i].Stack)
+            } else {
+                interfacee.atualizarPlayerStackHub(playersOrdenados[i], playersOrdenados[i].Stack)
+            }
+
             console.log(this.Pot)
             await this.esperarUmSegundo()
+
         }
 
     }
 
-    async controlarRodadaPreFlop(){
+    async controlarRodadaPreFlop() {
         const primeiroAgir = this.pegarPrimeiroAJogarPreFlop()
         await this.controlarAcaoPlayerBot(primeiroAgir)
 
@@ -326,7 +407,7 @@ export default class Game {
 
         this.Pot = this.SmallBlindValor + this.BigBlindValor
         console.log(this.Pot)
-        
+
         interfacee.atualizarPlayerStackHub(this.SmallBlind, this.SmallBlind.Stack)
         interfacee.atualizarPlayerStackHub(this.BigBlind, this.BigBlind.Stack)
     }
@@ -337,11 +418,12 @@ export default class Game {
         }
     }
 
-    async proximaRodada(){
+    async proximaRodada() {
         console.log(this.Baralho.Cartas, this.Player, this.Pot)
         console.log("Próxima rodada!")
-        for (const players of this.Player) {
-            players.resetMao()
+        for (const player of this.Player) {
+            player.resetMao()
+            player.resetPlayerFold()
         }
 
         this.Baralho.resetBaralho()
@@ -365,6 +447,7 @@ export default class Game {
             };
 
             // Adiciona event listeners para os botões
+            userAction.BotaoFold.addEventListener('click', handleButtonClick);
             userAction.BotaoCall.addEventListener('click', handleButtonClick);
             userAction.BotaoRaise.addEventListener('click', handleButtonClick);
             userAction.BotaoCheck.addEventListener('click', handleButtonClick);
@@ -376,6 +459,7 @@ export default class Game {
     }
 
     habilitarBotoes() {
+        userAction.BotaoFold.disabled = false;
         userAction.BotaoCall.disabled = false;
         userAction.BotaoRaise.disabled = false;
         userAction.BotaoCheck.disabled = false;
@@ -383,6 +467,7 @@ export default class Game {
     }
 
     desabilitarBotoes() {
+        userAction.BotaoFold.disabled = true;
         userAction.BotaoCall.disabled = true;
         userAction.BotaoRaise.disabled = true;
         userAction.BotaoCheck.disabled = true;
@@ -398,14 +483,14 @@ export default class Game {
         this.definirValoresBlinds()
 
         //apostas obrigatorias
-        
+
         this.apostasObrigatorias()
-        
+
         //PRÉ FLOP
         this.Rodada = 'preflop'
         await this.controlarRodadaPreFlop()
         interfacee.removerAllPlayerStack()
-        
+
         //FLOP
 
         await this.controlarRodadaFlop()

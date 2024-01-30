@@ -8,6 +8,7 @@ export default class Player{
         this.stack = stack
         this.posicao = null
         this.jogou = false
+        this.fold = false
     }
 
     get Mao(){
@@ -27,6 +28,9 @@ export default class Player{
     }
     get Stack(){
         return this.stack
+    }
+    get Fold(){
+        return this.fold
     }
 
 
@@ -50,6 +54,10 @@ export default class Player{
         this.jogou = valor
     }
 
+    set Fold(valor){
+        this.fold = valor
+    }
+
     adicionarCartaNaMao(carta){
         this.mao.push(carta)
     }
@@ -60,6 +68,10 @@ export default class Player{
 
     resetMao(){
         this.Mao = []
+    }
+
+    resetPlayerFold(){
+        this.fold = false;
     }
 
     tomarDecisao(valor, rodada){
@@ -91,6 +103,23 @@ export default class Player{
     check(){
         console.log(`O jogador ${this.Id} deu check`)
         this.Jogou = true
+    }
+
+    foldar(){
+        console.log(`O jogador ${this.Id} foldou`)
+        this.jogou = true
+    }
+
+    raise(valor){
+        console.log(`O JOGADOR ${this.Id} deu raise para ${valor}`)
+        this.Stack -= valor
+        this.jogou = true
+    }
+
+    allin(valor){
+        console.log(`O JOGADOR ${this.Id} deu ALL IN de ${valor}`)
+        this.Stack -= valor
+        this.jogou = true
     }
      
 }
