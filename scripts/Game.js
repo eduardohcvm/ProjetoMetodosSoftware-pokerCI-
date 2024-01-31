@@ -18,6 +18,7 @@ export default class Game {
         this.smallBlindValor = null;
         this.bigBlindValor = null;
         this.pot = 0;
+        this.bet = 0;
         this.definirBlinds(smallBlindValor, bigBlindValor);
         this.criarPlayers();
         this.definirPosiçõesIniciais();
@@ -68,6 +69,10 @@ export default class Game {
         return this.bigBlindValor
     }
 
+    get Bet(){
+        return this.bet
+    }
+
 
     set Dealer(player) {
         this.dealer = player
@@ -96,6 +101,11 @@ export default class Game {
     set BigBlindValor(valor) {
         this.bigBlindValor = valor
     }
+
+    set Bet(valor){
+        this.bet = valor
+    }
+
 
     esperarUmSegundo() {
         return new Promise(resolve => {
@@ -238,8 +248,9 @@ export default class Game {
                                 playersOrdenados[i].foldar();
                                 break;
                             case "raise":
-                                valorRaise = userAction.ValorRaise.value;
+                                valorRaise = Number(userAction.ValorRaise);
                                 playersOrdenados[i].raise(valorRaise);
+                                this.Pot += valorRaise - this.SmallBlindValor;
                                 break;
                             case "allin":
                                 playersOrdenados[i].allin(playersOrdenados[i].Stack);
@@ -257,8 +268,9 @@ export default class Game {
                                 playersOrdenados[i].foldar();
                                 break;
                             case "raise":
-                                valorRaise = userAction.ValorRaise.value;
+                                valorRaise = Number(userAction.ValorRaise);
                                 playersOrdenados[i].raise(valorRaise);
+                                this.Pot += valorRaise
                                 break;
                             case "allin":
                                 playersOrdenados[i].allin(playersOrdenados[i].Stack);
@@ -277,8 +289,9 @@ export default class Game {
                                 playersOrdenados[i].foldar();
                                 break;
                             case "raise":
-                                valorRaise = userAction.ValorRaise.value;
+                                valorRaise = Number(userAction.ValorRaise);
                                 playersOrdenados[i].raise(valorRaise);
+                                this.Pot += valorRaise - this.BigBlindValor;
                                 break;
                             case "allin":
                                 playersOrdenados[i].allin(playersOrdenados[i].Stack);
@@ -294,8 +307,9 @@ export default class Game {
                                 playersOrdenados[i].foldar();
                                 break;
                             case "raise":
-                                valorRaise = userAction.ValorRaise.value;
+                                valorRaise = Number(userAction.ValorRaise);
                                 playersOrdenados[i].raise(valorRaise);
+                                this.Pot += valorRaise;
                                 break;
                             case "allin":
                                 playersOrdenados[i].allin(playersOrdenados[i].Stack);
@@ -313,8 +327,9 @@ export default class Game {
                             playersOrdenados[i].foldar();
                             break;
                         case "raise":
-                            valorRaise = userAction.ValorRaise.value;
+                            valorRaise = Number(userAction.ValorRaise);
                             playersOrdenados[i].raise(valorRaise);
+                            this.Pot += valorRaise;
                             break;
                         case "allin":
                             playersOrdenados[i].allin(playersOrdenados[i].Stack);
@@ -333,9 +348,9 @@ export default class Game {
                 await this.esperarUmSegundo()
                 if (playersOrdenados[i].Posicao === "Small-Blind") {
                     if (this.Rodada === 'preflop') {
-                        playersOrdenados[i].tomarDecisao(this.SmallBlindValor, this.Rodada)
+                        this.Bet = playersOrdenados[i].tomarDecisao(this.Bet, this.Rodada)
                         interfacee.removerPlayerStack(playersOrdenados[i])
-                        this.Pot += this.SmallBlindValor
+                        this.Pot += this.Bet
                     } else {
                         playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada)
                         this.Pot += this.BigBlindValor
@@ -350,8 +365,8 @@ export default class Game {
                         this.Pot += this.BigBlindValor
                     }
                 } else {
-                    playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada)
-                    this.Pot += this.BigBlindValor
+                    this.Bet = playersOrdenados[i].tomarDecisao(this.Bet, this.Rodada, this.Pot)
+                    this.Pot += this.Bet
                 }
             }
 
@@ -481,6 +496,7 @@ export default class Game {
         this.entregarCartasPlayer()
         interfacee.exibirCartaPlayer(this.Player[0].Mao[0], this.Player[0].Mao[1])
         this.definirValoresBlinds()
+        this.Bet = this.BigBlindValor
 
         //apostas obrigatorias
 
@@ -493,16 +509,19 @@ export default class Game {
 
         //FLOP
 
+        this.Bet = 0
         await this.controlarRodadaFlop()
         interfacee.removerAllPlayerStack()
 
         //TURN
 
+        this.Bet = 0
         await this.controlarRodadaTurn()
         interfacee.removerAllPlayerStack()
 
         //RIVER
 
+        this.Bet = 0
         await this.controlarRodadaRiver()
         interfacee.removerAllPlayerStack()
 

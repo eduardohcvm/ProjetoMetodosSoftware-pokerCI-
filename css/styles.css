@@ -276,7 +276,7 @@ body{
 
 .boxStackBottom{
     position: absolute;
-    top: 120px;
+    top: 200px; /* padrão: 120px */
 }
 
 .stack{
@@ -309,16 +309,16 @@ body{
 }
 
 .stack-4{
-    top: 280px;
+    top: 280px; /* padrão: 340px */
     right: 225px;
 }
 
 .stack-5{
-    top: 280px;
+    top: 280px; /* padrão: 340px */
 }
 
 .stack-6{
-    top: 280px;
+    top: 280px; /* padrão: 340px */
     left: 245px;
 }
 
