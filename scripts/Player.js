@@ -253,7 +253,7 @@ export default class Player{
 
         if(this.Id != 1){
             interfacee.removerPlayerBackCards(this.Id)
-            interfacee.atualizarPlayerNameFold(this.id)
+            interfacee.atualizarPlayerNameFold(this.Id)
         }
         
         this.Fold = true

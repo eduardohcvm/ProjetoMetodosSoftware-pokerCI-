@@ -498,6 +498,7 @@ export default class Game {
         this.Baralho.embaralhar(this.Baralho.Cartas)
         this.entregarCartasPlayer()
         interfacee.exibirCartaPlayer(this.Player[0].Mao[0], this.Player[0].Mao[1])
+        interfacee.exibirPot(this.pot)
         this.definirValoresBlinds()
         this.Bet = this.BigBlindValor
 
