@@ -90,14 +90,14 @@ export default class Player{
                     return valor
                 }else if(passivo){ // Completa o small ou 50% fold/50% call se teve raise
                     if(valor === bigTemp) {
-                        this.callSmall(smallTemp)
+                        this.callSmall(smallTemp, interfacee)
                     } else {
                         let numeroAleatorio2 = Math.floor(Math.random() * 100)
 
                         if(numeroAleatorio2 < 50) {
                             this.foldar(interfacee)
                         } else {
-                            this.call(valor - smallTemp)
+                            this.call(valor - smallTemp, interfacee)
                         }
                     }
                     return valor
@@ -106,13 +106,13 @@ export default class Player{
 
                     if(numeroAleatorio3 < 70) {
                         if(valor === bigTemp) {
-                            this.callSmall(smallTemp)
+                            this.callSmall(smallTemp, interfacee)
                         } else {
-                            this.call(valor - smallTemp)
+                            this.call(valor - smallTemp, interfacee)
                         }
                         return valor
                     } else {
-                        this.raise(valor * 2 - smallTemp)
+                        this.raise(valor * 2 - smallTemp, interfacee)
                         return valor * 2
                     }
                 }
@@ -133,7 +133,7 @@ export default class Player{
                         if(numeroAleatorio4 < 50) {
                             this.foldar(interfacee)
                         } else {
-                            this.call(valor - bigTemp)
+                            this.call(valor - bigTemp, interfacee)
                         }
                     }
                     return valor
@@ -144,11 +144,11 @@ export default class Player{
                         if(valor === bigTemp) {
                             this.check(interfacee)
                         } else {
-                            this.call(valor - bigTemp)
+                            this.call(valor - bigTemp, interfacee)
                         }
                         return valor
                     } else {
-                        this.raise(valor * 2 - bigTemp)
+                        this.raise(valor * 2 - bigTemp, interfacee)
                         return valor * 2
                     }
                 }
@@ -162,17 +162,17 @@ export default class Player{
                     if(numeroAleatorio6 < 50) {
                         this.foldar(interfacee)
                     } else {
-                        this.call(valor)
+                        this.call(valor, interfacee)
                     }
                     return valor
                 }else{ // 70% call/30% raise 2x
                     let numeroAleatorio7 = Math.floor(Math.random() * 100)
 
                     if(numeroAleatorio7 < 70) {
-                        this.call(valor)
+                        this.call(valor, interfacee)
                         return valor
                     } else {
-                        this.raise(valor * 2)
+                        this.raise(valor * 2, interfacee)
                         return valor * 2
                     }
                 }
@@ -193,7 +193,7 @@ export default class Player{
                         this.check(interfacee)
                         return valor
                     } else {
-                        this.raise(pote * 4 / 10)
+                        this.raise(pote * 4 / 10, interfacee)
                         return pote * 4 / 10
                     }
                 }else{
@@ -202,22 +202,22 @@ export default class Player{
                     if(numeroAleatorio9 < 50) {
                         this.foldar(interfacee)
                     } else {
-                        this.call(valor)
+                        this.call(valor, interfacee)
                     }
                     return valor
                 }
             }else{ //Sempre bet 60% do pote (se open) ou 70% call/30% raise 2x (se teve raise/bet)
                 if(valor === 0){
-                    this.raise(pote * 6 / 10)
+                    this.raise(pote * 6 / 10, interfacee)
                     return pote * 6 / 10
                 }else{
                     let numeroAleatorio10 = Math.floor(Math.random() * 100)
 
                     if(numeroAleatorio10 < 70) {
-                        this.call(valor)
+                        this.call(valor, interfacee)
                         return valor
                     } else {
-                        this.raise(valor * 2)
+                        this.raise(valor * 2, interfacee)
                         return valor * 2
                     }
                 }
@@ -225,18 +225,25 @@ export default class Player{
         }
     }
 
-    callSmall(valor){
+    callSmall(valor, interfacee){
         console.log(`O jogador ${this.Id} colocou o Small`)
         this.Stack = this.Stack - valor
+
+        interfacee.atualizarPlayerStack(this.Id, valor)
     }
 
-    call(valor){
+    call(valor, interfacee){
         console.log(`O jogador ${this.Id} deu call`)
         this.Stack = this.Stack - valor
+
+        interfacee.exibirPlayerStack(this.Id, valor)
     }
 
     check(interfacee){
         console.log(`O jogador ${this.Id} deu check`)
+        if(interfacee.existeStackInterface(this.id)){
+            interfacee.removerPlayerStack(this.id)
+        }
         interfacee.exibirPlayerCheck(this.Id)
     }
 
@@ -251,9 +258,10 @@ export default class Player{
         this.Fold = true
     }
 
-    raise(valor){
+    raise(valor, interfacee){  //Adicioar verificaçao da linha 244
         console.log(`O jogador ${this.Id} deu raise para ${valor}`)
         this.Stack -= valor
+        interfacee.exibirPlayerStack(this.Id, valor)
     }
 
     allin(valor){

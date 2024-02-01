@@ -62,18 +62,23 @@ export default class Interface{
         divFilha.innerHTML = valor
     }
 
-    exibirPlayerStack(player, valor){
+    exibirPlayerStack(id, valor){
         const stack= document.createElement("div")
         const chipImg = document.createElement("img")
         const chipTextValue = document.createElement("p")
 
-        stack.className = `stack stack-${player.Id}`
+        stack.className = `stack stack-${id}`
         chipImg.src = "../img/chip.png"
         chipTextValue.innerHTML = valor
 
         mesa.appendChild(stack)
         stack.appendChild(chipImg)
         stack.appendChild(chipTextValue)
+    }
+
+    atualizarPlayerStack(id, valor){
+        const stack = document.querySelector(`.stack-${id} p`)
+        stack.innerHTML = valor
     }
 
     exibirPlayerCheck(id){
@@ -84,9 +89,13 @@ export default class Interface{
         mesa.appendChild(stack)
     }
 
+    removerPlayerCheck(id){
+        document.querySelector(`.check.stack-${id}`).remove()
+    }
 
-    removerPlayerStack(player){
-        const divStack = document.querySelector(`.stack.stack-${player.Id}`)
+
+    removerPlayerStack(id){
+        const divStack = document.querySelector(`.stack.stack-${id}`)
         if(divStack){
             mesa.removeChild(divStack)
         }
@@ -95,6 +104,11 @@ export default class Interface{
     removerAllPlayerStack(){
         const divsStack = document.querySelectorAll('.mesa .stack');
         divsStack.forEach(div => div.remove());
+    }
+
+    removerAllPlayerCheck(){
+        const divCheck = document.querySelectorAll('.mesa .check')
+        divCheck.forEach(div => div.remove())
     }
 
     exibirPlayerCompleto(player){
@@ -233,5 +247,11 @@ export default class Interface{
         this.removerPosicao(posicaoDealer)
         this.removerPlayerStack(smallBlind)
         this.removerPlayerStack(bigBlind)
+    }
+
+    existeStackInterface(id){
+        const stack = document.querySelector(`.stack-${id}`)
+        console.log(stack)
+        return stack !== null;
     }
 }
