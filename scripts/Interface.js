@@ -55,6 +55,13 @@ export default class Interface{
         box_player.appendChild(stackHub)
     }
 
+    atualizarPlayerStackHub(player, valor){
+        const divPai = document.querySelector(`.player.player-${player.id}`)
+        const divFilha = divPai.querySelector('.boxStack');
+
+        divFilha.innerHTML = valor
+    }
+
     exibirPlayerStack(player, valor){
         const stack= document.createElement("div")
         const chipImg = document.createElement("img")
@@ -69,12 +76,14 @@ export default class Interface{
         stack.appendChild(chipTextValue)
     }
 
-    atualizarPlayerStackHub(player, valor){
-        const divPai = document.querySelector(`.player.player-${player.id}`)
-        const divFilha = divPai.querySelector('.boxStack');
+    exibirPlayerCheck(id){
+        const stack = document.createElement("img")
+        stack.src = "../img/check.png"
+        stack.className = `check stack-${id}`
 
-        divFilha.innerHTML = valor
+        mesa.appendChild(stack)
     }
+
 
     removerPlayerStack(player){
         const divStack = document.querySelector(`.stack.stack-${player.Id}`)

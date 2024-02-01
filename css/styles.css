@@ -233,7 +233,7 @@ body{
 
 .pot{
     position: absolute;
-    top: 150px;
+    top: 135px; /* padrão: 150px */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -373,3 +373,8 @@ body{
     left: 245px;
 }
 
+.check{
+    position: absolute;
+    width: 20px;
+    height: 20px;
+}

@@ -69,7 +69,7 @@ export default class Game {
         return this.bigBlindValor
     }
 
-    get Bet(){
+    get Bet() {
         return this.bet
     }
 
@@ -102,7 +102,7 @@ export default class Game {
         this.bigBlindValor = valor
     }
 
-    set Bet(valor){
+    set Bet(valor) {
         this.bet = valor
     }
 
@@ -241,8 +241,8 @@ export default class Game {
         for (let i = 0; i < this.Qnt_players; i++) {
             if (playersOrdenados[i].Bot === false && playersOrdenados[i].Fold === false) {                         //Se for o Usuário
                 let acao = await this.aguardarAcaoJogador()
-                if (playersOrdenados[i].Posicao === 'Small-Blind') {
-                    if (this.Rodada === 'preflop') {
+                if (this.Rodada === 'preflop') {
+                    if (playersOrdenados[i].Posicao === 'Small-Blind') {
                         switch (acao) {
                             case "fold":
                                 playersOrdenados[i].Fold = true;
@@ -250,19 +250,22 @@ export default class Game {
                                 break;
                             case "raise":
                                 valorRaise = Number(userAction.ValorRaise);
-                                playersOrdenados[i].raise(valorRaise);
+                                playersOrdenados[i].raise(valorRaise - this.SmallBlindValor);
                                 this.Pot += valorRaise - this.SmallBlindValor;
+                                this.Bet = valorRaise;
                                 break;
                             case "allin":
                                 playersOrdenados[i].allin(playersOrdenados[i].Stack);
+                                this.Bet = playersOrdenados[i].Stack;
                                 break;
                             default:
-                                playersOrdenados[i].tomarDecisao(this.SmallBlindValor, this.Rodada);
-                                this.Pot += this.smallBlindValor;
+                                playersOrdenados[i].call(this.Bet - this.SmallBlindValor);
+                                this.Pot += this.Bet - this.SmallBlindValor;
                                 break;
                         }
                         interfacee.removerPlayerStack(playersOrdenados[i]);
-                    } else {
+
+                    } else if (playersOrdenados[i].Posicao === 'Big-Blind') {
                         switch (acao) {
                             case "fold":
                                 playersOrdenados[i].Fold = true;
@@ -270,37 +273,22 @@ export default class Game {
                                 break;
                             case "raise":
                                 valorRaise = Number(userAction.ValorRaise);
-                                playersOrdenados[i].raise(valorRaise);
-                                this.Pot += valorRaise
-                                break;
-                            case "allin":
-                                playersOrdenados[i].allin(playersOrdenados[i].Stack);
-                                break;
-                            default:
-                                playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada);
-                                this.Pot += this.BigBlindValor;
-                                break;
-                        }
-                    }
-                } else if (playersOrdenados[i].Posicao === 'Big-Blind') {
-                    if (this.Rodada === 'preflop') {
-                        switch (acao) {
-                            case "fold":
-                                playersOrdenados[i].Fold = true;
-                                playersOrdenados[i].foldar();
-                                break;
-                            case "raise":
-                                valorRaise = Number(userAction.ValorRaise);
-                                playersOrdenados[i].raise(valorRaise);
+                                playersOrdenados[i].raise(valorRaise - this.BigBlindValor);
                                 this.Pot += valorRaise - this.BigBlindValor;
+                                this.Bet = valorRaise;
                                 break;
                             case "allin":
                                 playersOrdenados[i].allin(playersOrdenados[i].Stack);
+                                this.Bet = playersOrdenados[i].Stack;
+                                break;
+                            case "check":
                                 break;
                             default:
-                                playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada);
+                                playersOrdenados[i].call(this.Bet - this.BigBlindValor);
+                                this.Pot += this.Bet - this.BigBlindValor;
                                 break;
                         }
+
                     } else {
                         switch (acao) {
                             case "fold":
@@ -311,17 +299,20 @@ export default class Game {
                                 valorRaise = Number(userAction.ValorRaise);
                                 playersOrdenados[i].raise(valorRaise);
                                 this.Pot += valorRaise;
+                                this.Bet = valorRaise;
                                 break;
                             case "allin":
                                 playersOrdenados[i].allin(playersOrdenados[i].Stack);
+                                this.Bet = playersOrdenados[i].Stack;
                                 break;
                             default:
-                                playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada);
-                                this.Pot += this.BigBlindValor;
+                                playersOrdenados[i].call(this.Bet);
+                                this.Pot += this.Bet;
                                 break;
                         }
                     }
-                } else {
+
+                } else { // pós-flop
                     switch (acao) {
                         case "fold":
                             playersOrdenados[i].Fold = true;
@@ -331,16 +322,22 @@ export default class Game {
                             valorRaise = Number(userAction.ValorRaise);
                             playersOrdenados[i].raise(valorRaise);
                             this.Pot += valorRaise;
+                            this.Bet = valorRaise;
+                            break;
+                        case "check":
+                            playersOrdenados[i].check();
                             break;
                         case "allin":
                             playersOrdenados[i].allin(playersOrdenados[i].Stack);
+                            this.Bet = playersOrdenados[i].Stack;
                             break;
                         default:
-                            playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada);
-                            this.Pot += this.BigBlindValor;
+                            playersOrdenados[i].call(this.Bet);
+                            this.Pot += this.Bet;
                             break;
                     }
                 }
+
                 interfacee.atualizarPlayerStackHub(playersOrdenados[i], playersOrdenados[i].Stack);
                 playersOrdenados[i].Jogou = true;
 
@@ -349,37 +346,49 @@ export default class Game {
                 await this.esperarUmSegundo()
                 if (playersOrdenados[i].Posicao === "Small-Blind") {
                     if (this.Rodada === 'preflop') {
-                        this.Bet = playersOrdenados[i].tomarDecisao(this.Bet, this.Rodada)
+                        this.Bet = playersOrdenados[i].tomarDecisao(this.Bet, this.Rodada, interfacee)
                         interfacee.removerPlayerStack(playersOrdenados[i])
-                        this.Pot += this.Bet
+                        if (!playersOrdenados[i].Fold) {
+                            this.Pot += this.Bet - this.SmallBlindValor
+                        }
                     } else {
-                        playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada)
-                        this.Pot += this.BigBlindValor
+                        this.Bet = playersOrdenados[i].tomarDecisao(this.Bet, this.Rodada, interfacee, this.Pot)
+                        if (!playersOrdenados[i].Fold) {
+                            this.Pot += this.Bet
+                        }
                     }
                 } else if (playersOrdenados[i].Posicao === "Big-Blind") {
                     if (this.Rodada === 'preflop') {
-                        playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada, this.Pot, interfacee)
+                        this.Bet = playersOrdenados[i].tomarDecisao(this.Bet, this.Rodada, interfacee)
                         interfacee.removerPlayerStack(playersOrdenados[i])
-
+                        if (!playersOrdenados[i].Fold) {
+                            this.Pot += this.Bet - this.BigBlindValor
+                        }
                     } else {
-                        playersOrdenados[i].tomarDecisao(this.BigBlindValor, this.Rodada)
-                        this.Pot += this.BigBlindValor
+                        this.Bet = playersOrdenados[i].tomarDecisao(this.Bet, this.Rodada, interfacee, this.Pot)
+                        if (!playersOrdenados[i].Fold) {
+                            this.Pot += this.Bet
+                        }
                     }
                 } else {
-                    this.Bet = playersOrdenados[i].tomarDecisao(this.Bet, this.Rodada, this.Pot)
-                    this.Pot += this.Bet
+                    this.Bet = playersOrdenados[i].tomarDecisao(this.Bet, this.Rodada, interfacee, this.Pot)
+                    if (!playersOrdenados[i].Fold) {
+                        this.Pot += this.Bet
+                    }
                 }
             }
 
+            playersOrdenados[i].Jogou = true
+
             if (!playersOrdenados[i].Fold) {
-                interfacee.exibirPlayerStack(playersOrdenados[i], this.BigBlindValor)
+                interfacee.exibirPlayerStack(playersOrdenados[i], this.Bet)
                 interfacee.atualizarPlayerStackHub(playersOrdenados[i], playersOrdenados[i].Stack)
             } else {
                 interfacee.atualizarPlayerStackHub(playersOrdenados[i], playersOrdenados[i].Stack)
             }
 
             console.log(this.Pot)
-            interfacee.atualizarPot(this.pot)
+            interfacee.atualizarPot(this.Pot)
 
             await this.esperarUmSegundo()
 
@@ -425,6 +434,7 @@ export default class Game {
 
         this.Pot = this.SmallBlindValor + this.BigBlindValor
         console.log(this.Pot)
+        interfacee.atualizarPot(this.Pot)
 
         interfacee.atualizarPlayerStackHub(this.SmallBlind, this.SmallBlind.Stack)
         interfacee.atualizarPlayerStackHub(this.BigBlind, this.BigBlind.Stack)
@@ -498,6 +508,7 @@ export default class Game {
         this.Baralho.embaralhar(this.Baralho.Cartas)
         this.entregarCartasPlayer()
         interfacee.exibirCartaPlayer(this.Player[0].Mao[0], this.Player[0].Mao[1])
+        interfacee.exibirPot(this.Pot)
         this.definirValoresBlinds()
         this.Bet = this.BigBlindValor
 
