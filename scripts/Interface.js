@@ -95,7 +95,7 @@ export default class Interface{
 
 
     removerPlayerStack(id){
-        const divStack = document.querySelector(`.stack.stack-${id}`)
+        const divStack = document.querySelector(`.stack-${id}`)
         if(divStack){
             mesa.removeChild(divStack)
         }

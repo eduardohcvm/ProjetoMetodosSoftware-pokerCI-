@@ -12,6 +12,7 @@ export default class Game {
         this.baralho = new Baralho();
         this.qnt_players = qnt_players;
         this.rodada = "preflop";
+        this.rodadaAcabou = false
         this.dealer = null;
         this.smallBlind = null;
         this.bigBlind = null;
@@ -73,6 +74,10 @@ export default class Game {
         return this.bet
     }
 
+    get RodadaAcabou(){
+        return this.rodadaAcabou
+    }
+
 
     set Dealer(player) {
         this.dealer = player
@@ -106,12 +111,16 @@ export default class Game {
         this.bet = valor
     }
 
+    set RodadaAcabou(valor){
+        this.rodadaAcabou = valor
+    }
+
 
     esperarUmSegundo() {
         return new Promise(resolve => {
             setTimeout(() => {
                 resolve();
-            }, 500);
+            }, 250);
         });
     }
 
@@ -222,7 +231,7 @@ export default class Game {
 
     ordenarVetorPlayers(primeiroAgir) {
         const aux = []
-
+        
         for (let i = primeiroAgir.Id; i <= this.Qnt_players; i++) {
             aux.push(this.Player[i - 1])
         }
@@ -235,10 +244,16 @@ export default class Game {
     }
 
     async controlarAcaoPlayerBot(primeiroAgir) {
-        const playersOrdenados = this.ordenarVetorPlayers(primeiroAgir)
+        let playersOrdenados = this.ordenarVetorPlayers(primeiroAgir)
         let valorRaise
+        let i = 0
+        let contadorJogadas = 0
 
-        for (let i = 0; i < this.Qnt_players; i++) {
+        for(let j = 0; j < this.Qnt_players; j++){
+                playersOrdenados[j].Jogou = false
+        }   
+        
+        while(!this.RodadaAcabou){
             if (playersOrdenados[i].Bot === false && playersOrdenados[i].Fold === false) {                         //Se for o Usuário
                 let acao = await this.aguardarAcaoJogador()
                 if (this.Rodada === 'preflop') {
@@ -250,7 +265,7 @@ export default class Game {
                                 break;
                             case "raise":
                                 valorRaise = Number(userAction.ValorRaise);
-                                playersOrdenados[i].raise(valorRaise - this.SmallBlindValor, interfacee);
+                                playersOrdenados[i].raise(valorRaise, interfacee);
                                 this.Pot += valorRaise - this.SmallBlindValor;
                                 this.Bet = valorRaise;
                                 break;
@@ -259,11 +274,10 @@ export default class Game {
                                 this.Bet = playersOrdenados[i].Stack;
                                 break;
                             default:
-                                playersOrdenados[i].call(this.Bet - this.SmallBlindValor, interfacee);
-                                this.Pot += this.Bet - this.SmallBlindValor;
+                                playersOrdenados[i].call(this.Bet, interfacee);
+                                this.Pot += this.Bet
                                 break;
                         }
-                        interfacee.removerPlayerStack(playersOrdenados[i].Id);
 
                     } else if (playersOrdenados[i].Posicao === 'Big-Blind') {
                         switch (acao) {
@@ -273,7 +287,7 @@ export default class Game {
                                 break;
                             case "raise":
                                 valorRaise = Number(userAction.ValorRaise);
-                                playersOrdenados[i].raise(valorRaise - this.BigBlindValor, interfacee);
+                                playersOrdenados[i].raise(valorRaise, interfacee);
                                 this.Pot += valorRaise - this.BigBlindValor;
                                 this.Bet = valorRaise;
                                 break;
@@ -284,8 +298,8 @@ export default class Game {
                             case "check":
                                 break;
                             default:
-                                playersOrdenados[i].call(this.Bet - this.BigBlindValor, interfacee);
-                                this.Pot += this.Bet - this.BigBlindValor;
+                                playersOrdenados[i].call(this.Bet, interfacee);
+                                this.Pot += this.Bet
                                 break;
                         }
 
@@ -320,7 +334,7 @@ export default class Game {
                             break;
                         case "raise":
                             valorRaise = Number(userAction.ValorRaise, interfacee);
-                            playersOrdenados[i].raise(valorRaise), interfacee;
+                            playersOrdenados[i].raise(valorRaise, interfacee);
                             this.Pot += valorRaise;
                             this.Bet = valorRaise;
                             break;
@@ -335,7 +349,7 @@ export default class Game {
                             playersOrdenados[i].call(this.Bet, interfacee);
                             this.Pot += this.Bet;
                             break;
-                    }
+                    }   
                 }
 
                 interfacee.atualizarPlayerStackHub(playersOrdenados[i], playersOrdenados[i].Stack);
@@ -347,7 +361,6 @@ export default class Game {
                 if (playersOrdenados[i].Posicao === "Small-Blind") {
                     if (this.Rodada === 'preflop') {
                         this.Bet = playersOrdenados[i].tomarDecisao(this.Bet, this.Rodada, interfacee)
-                        interfacee.removerPlayerStack(playersOrdenados[i].Id)
                         if (!playersOrdenados[i].Fold) {
                             this.Pot += this.Bet - this.SmallBlindValor
                         }
@@ -360,7 +373,7 @@ export default class Game {
                 } else if (playersOrdenados[i].Posicao === "Big-Blind") {
                     if (this.Rodada === 'preflop') {
                         this.Bet = playersOrdenados[i].tomarDecisao(this.Bet, this.Rodada, interfacee)
-                        interfacee.removerPlayerStack(playersOrdenados[i].Id)
+
                         if (!playersOrdenados[i].Fold) {
                             this.Pot += this.Bet - this.BigBlindValor
                         }
@@ -376,8 +389,15 @@ export default class Game {
                         this.Pot += this.Bet
                     }
                 }
+
             }
 
+            if(playersOrdenados[i].Acao === "raise"){
+                for(let j = 0 ; j < this.Qnt_players ; j++){
+                    playersOrdenados[j].Jogou = false
+                }
+            }
+            
             playersOrdenados[i].Jogou = true
 
             if (!playersOrdenados[i].Fold) {
@@ -391,9 +411,17 @@ export default class Game {
             interfacee.atualizarPot(this.Pot)
 
             await this.esperarUmSegundo()
+            
+            if(playersOrdenados[(i+1) % this.Qnt_players].Jogou === true){
+                break
+            }
 
+            i++
+            if(i === 8){
+                i=0
+            }
         }
-
+        
     }
 
     async controlarRodadaPreFlop() {
@@ -551,7 +579,5 @@ export default class Game {
         this.habilitarBotoes()
 
         this.proximaRodada()
-
-
     }
 }
