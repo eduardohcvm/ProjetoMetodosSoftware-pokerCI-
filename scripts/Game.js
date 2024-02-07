@@ -184,6 +184,12 @@ export default class Game {
         }
     }
 
+    resetarBetPlayers() {
+        for (let i = 0; i < this.Qnt_players; i++) {
+            this.Player[i].Bet = 0
+        }
+    }
+
     pegarPrimeiroAJogarPreFlop() {
         if (this.Qnt_players > 3) {
             return this.Player[this.BigBlind.Id === this.Qnt_players ? (this.BigBlind.Id - this.Qnt_players) : this.BigBlind.Id]
@@ -554,6 +560,7 @@ export default class Game {
 
         //FLOP
 
+        this.resetarBetPlayers()
         this.Bet = 0
         await this.controlarRodadaFlop()
         interfacee.removerAllPlayerStack()
@@ -561,6 +568,7 @@ export default class Game {
 
         //TURN
 
+        this.resetarBetPlayers()
         this.Bet = 0
         await this.controlarRodadaTurn()
         interfacee.removerAllPlayerStack()
@@ -568,6 +576,7 @@ export default class Game {
 
         //RIVER
 
+        this.resetarBetPlayers()
         this.Bet = 0
         await this.controlarRodadaRiver()
         interfacee.removerAllPlayerStack()
