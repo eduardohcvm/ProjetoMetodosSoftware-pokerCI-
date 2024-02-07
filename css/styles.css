@@ -1,0 +1,380 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body{
+    background-color: rgb(25, 13, 27);
+}
+
+.box-mesa{
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mesa{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 65%;
+    height: 50%;
+    background-color: rgb(0, 122, 27);
+    border-radius: 500px;
+    border: 20px solid rgb(133, 0, 0);
+}
+
+.mao{
+    position: absolute;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    top: -50px;
+    z-index: 1;
+    width: 135px;
+    height: 100px;
+}
+
+.mao-2{
+    top: -50px;
+    right: 193px; 
+}
+
+.mao-3{
+    top: 178px;
+    right: -70px;
+}
+
+.mao-4{
+    top: 400px;
+    right: 193px;
+}
+
+.mao-5{
+    top: 400px;
+}
+
+.mao-6{
+    top: 400px; 
+    left: 193px;
+}
+
+.mao-7{
+    top: 178px; 
+    left: -70px;
+}
+
+.mao-8{
+    top: -50px; 
+    left: 193px;
+}
+
+.mao img{
+    width: 62.5px;
+    height: 90px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.281);
+}
+
+.mao img:hover{
+    width: 75px;
+    height: 100px;
+    margin: 0 5px;
+}
+
+.linha{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    width: 80%;
+    height: 80%;
+    border-radius: 200px;
+    border: 2px solid white;
+}
+
+.box-board{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+}
+
+.flop{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 201px;
+    height: 100px;
+    background-color: transparent;
+    border: 1px solid white;
+    margin-right: 10px;
+    border-radius: 7px;
+}
+
+.flop img{
+    width: 80.25px;
+    height: 94px;
+    padding: 2px;
+}   
+
+.turn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 67px;
+    height: 100px;
+    background-color: transparent;
+    border: 1px solid white;
+    margin-right: 10px;
+    border-radius: 7px;
+}
+
+.turn img{
+    width: 80.25px;
+    height: 94px;
+    padding: 2px;
+}
+
+.river{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 67px;
+    height: 100px;
+    background-color: transparent;
+    border: 1px solid white;
+    border-radius: 7px;
+}
+
+.river img{
+    width: 80.25px;
+    height: 94px;
+    padding: 2px;
+}
+
+.player{
+    position: relative;
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 1px solid black;
+    background-color: rgba(0, 0, 0, 0.616);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+.player-1{
+    top: -75px;
+}
+
+.player-2{
+    top: -75px;
+    right: 200px;   
+}
+
+.player-3{
+    right: -65px;
+}
+
+.player-4{
+    bottom: -75px;
+    right: 200px    ;
+}
+
+.player-5{
+    bottom: -75px;
+}
+
+.player-6{
+    bottom: -75px;
+    left: 200px;
+}
+
+.player-7{
+    left: -65px;
+}
+
+.player-8{
+    top: -75px;
+    left: 200px;
+}
+
+.player p{
+    background-color: rgba(0, 0, 0, 0.589);
+    padding: 5px;
+    border-radius: 7px;
+}
+
+.boxBackCards{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.backCard{
+    z-index: -1;
+    margin: 0 1.5px;
+    width: 50px;
+    height: 70px;
+}
+
+.pot{
+    position: absolute;
+    top: 135px; /* padrão: 150px */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pot img{
+    width: 30px;
+    height: 30px;
+}
+
+.potValor{
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    margin: 0 5px;
+}
+
+.posicao{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    width: 30px;
+    height: 30px;
+    font-size: 25px;
+    background-color: white;
+    border-radius: 50%;
+    color: red;
+    font-weight: bolder;
+    box-shadow: 2px 2px 2px rgb(126, 123, 123);
+}
+
+.comandos{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    margin: 0 auto;
+    width: 500px;
+    top: 8%;
+}
+
+.comandos button{
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    margin: 0 5px;
+    width: 80px;
+    height: 40px;
+    border-radius: 7px;
+    font-weight: bolder;
+    transition: 0.5s;
+    box-shadow: none;
+    border: 2px solid black;
+}
+
+.comandos button:hover{
+    width: 125px;
+    height: 45px;
+    cursor: pointer;
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+.boxStack{
+    position: absolute;
+    top: -30px;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    width: 100px;
+    height: 30px;
+    background-color: rgba(60, 170, 10, 0.527);
+    border: 2px solid rgb(190, 190, 190);
+    border-radius: 7px;
+    color: white;
+    font-weight: bold;
+}
+
+.boxStackBottom{
+    position: absolute;
+    top: 120px; /* padrão: 120px */
+}
+
+.stack{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    color: white;
+    font-size: 18px;
+}
+
+.stack img{
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+}
+
+.stack-1{
+    top: 50px;
+}
+
+.stack-2{
+    top: 50px;
+    right: 245px;
+}
+
+.stack-3{
+    top: 200px;
+    right: 60px;
+}
+
+.stack-4{
+    top: 340px; /* padrão: 340px */
+    right: 225px;
+}
+
+.stack-5{
+    top: 340px; /* padrão: 340px */
+}
+
+.stack-6{
+    top: 340px; /* padrão: 340px */
+    left: 245px;
+}
+
+.stack-7{
+    top: 200px;
+    left: 70px;
+    flex-direction: row-reverse;
+}
+
+.stack-8{
+    top: 50px;
+    left: 245px;
+}
+
+.check{
+    position: absolute;
+    width: 20px;
+    height: 20px;
+}
