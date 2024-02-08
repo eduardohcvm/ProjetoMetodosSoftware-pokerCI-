@@ -308,10 +308,16 @@ export default class Player{
         interfacee.exibirPlayerStack(this.Id, valor)
     }
 
-    allin(valor){
+    allin(valor, interfacee){
         console.log(`O jogador ${this.Id} deu ALL IN de ${valor}`)
         this.Acao = "allin"
-        this.Stack -= valor
+        this.Bet = this.Bet + valor 
+        this.Stack = 0
+
+        if(interfacee.existeStackInterface(this.id)){
+            interfacee.removerPlayerStack(this.id)
+        }
+        interfacee.exibirPlayerStack(this.Id, this.Bet)
     }
      
 }

@@ -276,8 +276,10 @@ export default class Game {
                                 this.Bet = valorRaise;
                                 break;
                             case "allin":
-                                playersOrdenados[i].allin(playersOrdenados[i].Stack);
-                                this.Bet = playersOrdenados[i].Stack;
+                                valorRaise = playersOrdenados[i].Stack
+                                playersOrdenados[i].allin(playersOrdenados[i].Stack, interfacee);
+                                this.Pot += valorRaise;
+                                this.Bet = playersOrdenados[i].Bet;
                                 break;
                             default:
                                 playersOrdenados[i].call(this.Bet, interfacee);
@@ -298,8 +300,10 @@ export default class Game {
                                 this.Bet = valorRaise;
                                 break;
                             case "allin":
-                                playersOrdenados[i].allin(playersOrdenados[i].Stack);
-                                this.Bet = playersOrdenados[i].Stack;
+                                valorRaise = playersOrdenados[i].Stack
+                                playersOrdenados[i].allin(playersOrdenados[i].Stack, interfacee);
+                                this.Pot += valorRaise;
+                                this.Bet = playersOrdenados[i].Bet;
                                 break;
                             case "check":
                                 break;
@@ -322,8 +326,10 @@ export default class Game {
                                 this.Bet = valorRaise;
                                 break;
                             case "allin":
-                                playersOrdenados[i].allin(playersOrdenados[i].Stack);
-                                this.Bet = playersOrdenados[i].Stack;
+                                valorRaise = playersOrdenados[i].Stack
+                                playersOrdenados[i].allin(playersOrdenados[i].Stack, interfacee);
+                                this.Pot += valorRaise;
+                                this.Bet = playersOrdenados[i].Bet;
                                 break;
                             default:
                                 playersOrdenados[i].call(this.Bet, interfacee);
