@@ -283,7 +283,7 @@ export default class Game {
                                 break;
                             default:
                                 playersOrdenados[i].call(this.Bet, interfacee);
-                                this.Pot += this.Bet
+                                this.Pot += this.Bet - this.SmallBlindValor
                                 break;
                         }
 
@@ -309,7 +309,7 @@ export default class Game {
                                 break;
                             default:
                                 playersOrdenados[i].call(this.Bet, interfacee);
-                                this.Pot += this.Bet
+                                this.Pot += this.Bet - this.BigBlindValor
                                 break;
                         }
 
